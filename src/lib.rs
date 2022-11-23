@@ -1,6 +1,4 @@
 #![feature(test)]
-#![feature(vec_resize_default)]
-#![feature(fixed_size_array)]
 #![feature(integer_atomics)]
 #![feature(atomic_min_max)]
 

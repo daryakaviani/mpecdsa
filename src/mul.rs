@@ -10,7 +10,6 @@
  * Both multipliers rely upon the KOS OT-extension protocol in ote.rs
  ***********/
 
-use core::array::FixedSizeArray;
 use std::result::{Result};
 use std::cmp;
 use rand::{Rng};
