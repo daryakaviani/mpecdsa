@@ -8,8 +8,7 @@ use std::{env};
 extern crate rand;
 use rand::{Rng};
 
-extern crate time;
-use time::PreciseTime;
+use std::time::Instant;
 
 extern crate curves;
 use curves::{Ford};
@@ -101,41 +100,41 @@ fn main() {
 		let skb = FSecp256Ord::from_slice(&[0xb75db4463a602ff0, 0x83b6a76e7fad1ec, 0xa33f33b8e9c84dbd, 0xb94fceb9fff7cfb2]);
 
 		if matches.opt_present("bench_setup") {
-	        let signstart = PreciseTime::now();
+	        let signstart = Instant::now();
 	        for _ in 0..iters {
 	            mpecdsa::mpecdsa::Bob2P::new(&skb, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
 	        }
-	        let signend = PreciseTime::now();
-	        println!("{:.3} ms avg", (signstart.to(signend).num_milliseconds() as f64)/(iters as f64) );
+	        let total_millis = signstart.elapsed().as_millis();
+	        println!("{:.3} ms avg", (total_millis as f64)/(iters as f64) );
 
 		} else {
 			let bob = mpecdsa::mpecdsa::Bob2P::new(&skb, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
-            let signstart = PreciseTime::now();
+            let signstart = Instant::now();
             for _ in 0..iters {
                 bob.sign(&msg, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
             }
-            let signend = PreciseTime::now();
-            println!("{:.3} ms avg", (signstart.to(signend).num_milliseconds() as f64)/(iters as f64) );
+	        let total_millis = signstart.elapsed().as_millis();
+            println!("{:.3} ms avg", (total_millis as f64)/(iters as f64) );
 		}
 
 	} else {
 		let ska = FSecp256Ord::from_slice(&[0xc93d9fa738a8b4b6, 0xe8dd5f4af65e7462, 0xcbdf97aeca50c5c4, 0x67498f7dcab40d3]);
 		if matches.opt_present("bench_setup") {
-	        let signstart = PreciseTime::now();
+	        let signstart = Instant::now();
 	        for _ in 0..iters {
 	            mpecdsa::mpecdsa::Alice2P::new(&ska, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
 	        }
-	        let signend = PreciseTime::now();
-	        println!("{:.3} ms avg", (signstart.to(signend).num_milliseconds() as f64)/(iters as f64) );
+	        let total_millis = signstart.elapsed().as_millis();
+	        println!("{:.3} ms avg", (total_millis as f64)/(iters as f64) );
 
 		} else  {
             let alice = mpecdsa::mpecdsa::Alice2P::new(&ska, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
-            let signstart = PreciseTime::now();
+            let signstart = Instant::now();
             for _ in 0..iters {
                 alice.sign(&msg, &mut rng, &mut streamrecv, &mut streamsend).unwrap();
             }
-            let signend = PreciseTime::now();
-            println!("{:.3} ms avg", (signstart.to(signend).num_milliseconds() as f64)/(iters as f64) );
+	        let total_millis = signstart.elapsed().as_millis();
+            println!("{:.3} ms avg", (total_millis as f64)/(iters as f64) );
 		}
 
 	}

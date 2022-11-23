@@ -11,8 +11,7 @@ use std::{env};
 extern crate rand;
 use rand::{Rng};
 
-extern crate time;
-use time::PreciseTime;
+use std::time::Instant;
 
 extern crate mpecdsa;
 
@@ -158,11 +157,11 @@ fn main() {
 
     println!("Performing {} Iteration Benchmark...", iters);
 
-    let setupstart = PreciseTime::now();
+    let setupstart = Instant::now();
     for _ in 0..iters {
         mpecdsa::mpecdsa::ThresholdSigner::new(index, thres, &mut rng, sendvec.as_mut_slice(), recvvec.as_mut_slice()).unwrap();
     }
-    let setupend = PreciseTime::now();
-    println!("{:.3} ms avg", (setupstart.to(setupend).num_milliseconds() as f64)/(iters as f64));
+    let total_millis = setupstart.elapsed().as_millis();
+    println!("{:.3} ms avg", (total_millis as f64)/(iters as f64));
 
 }

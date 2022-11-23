@@ -13,8 +13,7 @@ use rayon::prelude::*;
 extern crate rand;
 use rand::{Rng};
 
-extern crate time;
-use time::PreciseTime;
+use std::time::Instant;
 
 extern crate mpecdsa;
 use mpecdsa::*;
@@ -222,7 +221,7 @@ fn main() {
     let mut prunedsend : Vec<&mut Option<_>> = sendvec.iter_mut().enumerate().filter_map(|(index, val)| if counterparties.contains(&index) {Some(val)} else {None}).collect();
     let mut prunedmultiplier : Vec<&mul::MulPlayer> = multipliervec.iter().enumerate().filter_map(|(index, val)| if counterparties.contains(&index) {Some(val)} else {None}).collect();
 
-    let setupstart = PreciseTime::now();
+    let setupstart = Instant::now();
     for _ in 0..iters {
         let shares = mprmul(1, index, &mut prunedmultiplier[..], &mut ro, &mut rng, &mut prunedrecv[..], &mut prunedsend[..], &rayonpool).unwrap();
         let mut shares1 = Vec::with_capacity(shares.len());
@@ -231,7 +230,7 @@ fn main() {
         }
         mpmul(&[SecpOrd::rand(&mut rng)], index, &shares1.as_slice(), &mut prunedrecv.as_mut_slice(), &mut prunedsend.as_mut_slice()).unwrap();
     }
-    let setupend = PreciseTime::now();
-    println!("{:.3} ms avg", (setupstart.to(setupend).num_milliseconds() as f64)/(iters as f64));
+    let total_millis = setupstart.elapsed().as_millis();
+    println!("{:.3} ms avg", (total_millis as f64)/(iters as f64));
 
 }

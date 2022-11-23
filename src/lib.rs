@@ -18,7 +18,6 @@ use std::io;
 extern crate core;
 extern crate rand;
 extern crate curves;
-extern crate time;
 extern crate byteorder;
 extern crate bit_reverse;
 extern crate rayon;

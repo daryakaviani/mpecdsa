@@ -9,7 +9,6 @@ getopts = "0.2.21"
 rand = "0.3.16"
 curves = { path = "./curves" }
 rust-crypto = "^0.2"
-time="*"
 byteorder = "1.1.0"
 bit_reverse = "0.1.7"
 rayon = "1.1"
